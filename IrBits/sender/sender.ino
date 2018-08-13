@@ -26,6 +26,8 @@ IRsend sender;
 void setup()
 {
 	OSCCAL = 147;
+	
+	ADMUX = _BV(MUX3) | _BV(MUX2);  // For ATTiny85
 
 	sender.enableIROut(38);
 }
@@ -34,7 +36,7 @@ data_t data = { 0xAB, 0x0000 };
 
 void loop()
 {
-	data.value++;
+	data.value = readVcc();
 	data.checksum = data.serial_no + data.value;
 
 	data_serializer_t serializer;
@@ -113,3 +115,21 @@ void sendPumpkin(unsigned long data, int nbits)
 //	TIMER_DISABLE_PWM; // Disable pin 3 PWM output
 //	if (time > 0) _delay_us(time);
 //}
+
+
+long readVcc() {
+
+	ADMUX = _BV(MUX3) | _BV(MUX2);
+
+	_delay_ms(2);
+	ADCSRA |= _BV(ADSC);
+	while (bit_is_set(ADCSRA, ADSC));
+
+	uint8_t low = ADCL;
+	uint8_t high = ADCH;
+
+	long result = (high << 8) | low;
+
+	result = 1125300L / result; // Výpoèet Vcc (mV); 1125300 = 1.1*1023*1000
+	return result;
+}
