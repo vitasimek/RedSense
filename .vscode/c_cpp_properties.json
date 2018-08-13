@@ -1,0 +1,19 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceRoot}",
+                "/home/yatuga/.arduino15/packages/ATTinyCore/hardware/avr/1.1.5/**",
+                "/home/yatuga/.arduino15/packages/arduino/tools/**",
+                "/home/yatuga/.arduino15/packages/arduino/hardware/avr/1.6.21/**",
+                "/home/yatuga/Arduino/libraries/**/**"
+            ],
+            "intelliSenseMode": "clang-x64",
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c11",
+            "cppStandard": "c++17"
+        }
+    ],
+    "version": 4
+}

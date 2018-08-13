@@ -1,0 +1,7 @@
+{
+    "output": "build",
+    "sketch": "src/receiver/receiver.ino",
+    "board": "arduino:avr:nano",
+    "configuration": "cpu=atmega328old",
+    "port": "/dev/ttyUSB0"
+}
