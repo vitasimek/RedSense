@@ -1,6 +1,8 @@
 {
     "files.associations": {
         "ratio": "cpp",
-        "type_traits": "cpp"
+        "type_traits": "cpp",
+        "*.ipp": "cpp",
+        "system_error": "cpp"
     }
 }
