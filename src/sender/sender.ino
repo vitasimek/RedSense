@@ -4,21 +4,9 @@
 #include <boarddefs.h>
 #include <IRremoteInt.h>
 #include <avr/delay.h>
+#include "data.h"
 
 #define IR_LED 1
-
-typedef struct
-{
-	byte serial_no;
-	unsigned int value;
-	byte checksum;
-} data_t;
-
-typedef union
-{
-	data_t data;
-	unsigned long raw_data;
-} data_serializer_t;
 
 
 IRsend sender;
@@ -130,6 +118,6 @@ long readVcc() {
 
 	long result = (high << 8) | low;
 
-	result = 1125300L / result; // Výpoèet Vcc (mV); 1125300 = 1.1*1023*1000
+	result = 1125300L / result; // Vï¿½poï¿½et Vcc (mV); 1125300 = 1.1*1023*1000
 	return result;
 }

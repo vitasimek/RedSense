@@ -1,6 +1,6 @@
 #include <boarddefs.h>
 #include <IRremote.h>
-
+#include "data.h"
 
 #define CONTROL 2
 #define BUTTON_1 5
@@ -12,18 +12,6 @@
 IRrecv receiver(CONTROL, LED);
 
 
-typedef struct
-{
-  byte serial_no;
-  unsigned int value;
-  byte checksum;
-} data_t;
-
-typedef union
-{
-  data_t data;
-  unsigned long raw_data;
-} data_serializer_t;
 
 
 void setup()
