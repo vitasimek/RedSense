@@ -1,3 +1,5 @@
 models/*.gcode
 models/*.stl
 build
+crc/bin
+crc/obj
