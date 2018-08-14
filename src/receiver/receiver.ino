@@ -33,9 +33,11 @@ void loop()
     data_serializer_t serializer;
     serializer.raw_data = results.value;
 
-    // byte checksum = serializer.data.serial_no + serializer.data.analog + serializer.data.battery;
-    byte checksum = 0xA;
-    bool isValid = (serializer.data.checksum == checksum);
+    byte actualChecksum = serializer.data.checksum;
+    serializer.data.checksum = 0;
+    
+    byte expectedChecksum = computeChecksum(serializer.raw_data);
+    bool isValid = (actualChecksum == expectedChecksum);
 
     Serial.print("Type: 0x");
     Serial.print(results.decode_type, HEX);
@@ -52,8 +54,11 @@ void loop()
     Serial.print("Battery: 0x");
     Serial.print(serializer.data.battery, HEX);
     Serial.print("\t");
+    Serial.print("Expected checksum: 0x");
+    Serial.print(expectedChecksum, HEX);
+    Serial.print("\t");
     Serial.print("Checksum: 0x");
-    Serial.print(serializer.data.checksum, HEX);
+    Serial.print(actualChecksum, HEX);
     Serial.print("\t");
     Serial.print("Valid: ");
     Serial.print(isValid ? "yes" : "no");

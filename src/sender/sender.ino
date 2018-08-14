@@ -28,6 +28,9 @@ data_t data = {0xA};
 
 void loop()
 {
+	// TODO: Optimize with different type (data packet);
+	data.checksum = 0;
+
 	digitalWrite(ANALOG_PWR, HIGH);
 	//	data.analog = analogRead(ANALOG_PIN);
 	data.analog = 1023;
@@ -35,9 +38,12 @@ void loop()
 
 	//	data.battery = readVcc() - 2800;
 	data.battery = (4300 - 2800) / 100;
-	data.checksum = 0x0A;
 
 	data_serializer_t serializer;
+	serializer.data = data;
+
+	// TODO: Optimize with different type (data packet);
+	data.checksum = computeChecksum(serializer.raw_data);
 	serializer.data = data;
 
 	sendMessage(serializer.raw_data);
