@@ -11,10 +11,11 @@ namespace crc
         {
             var sums = new Dictionary<uint, long>();
 
-            for (int i = 0; i < Math.Pow(2, 24); i++)
+            for (long i = 0; i < Math.Pow(2, 24); i++)
             {
-
-                uint sum = Crc4.ComputeChecksum((byte)((i & 0x000F) >> 0), (byte)((i & 0x00F0) >> 4), (byte)((i & 0x0F00) >> 8));
+                uint sum = Crc4.ComputeChecksum(
+                    (byte)((i & 0x00000F) >> 0x00), (byte)((i & 0x0000F0) >> 0x04), (byte)((i & 0x000F00) >> 0x08),
+                    (byte)((i & 0x00F000) >> 0x0C), (byte)((i & 0x0F0000) >> 0x10), (byte)((i & 0xF00000) >> 0x14));
 
                 if (sums.ContainsKey(sum))
                 {
