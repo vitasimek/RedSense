@@ -7,35 +7,45 @@
 #include "data.h"
 
 #define IR_LED 1
-
+#define ANALOG_PWR 3
+#define ANALOG_PIN A2
 
 IRsend sender;
 
 void setup()
 {
 	OSCCAL = 147;
-	
-	ADMUX = _BV(MUX3) | _BV(MUX2);  // For ATTiny85
+
+	ADMUX = _BV(MUX3) | _BV(MUX2); // For ATTiny85
+
+	pinMode(ANALOG_PWR, OUTPUT);
+	digitalWrite(ANALOG_PWR, LOW);
 
 	sender.enableIROut(38);
 }
 
-data_t data = { 0xAB, 0x0000 };
+data_t data = {0xA};
 
 void loop()
 {
-	data.value = readVcc();
-	data.checksum = data.serial_no + data.value;
+	digitalWrite(ANALOG_PWR, HIGH);
+	//	data.analog = analogRead(ANALOG_PIN);
+	data.analog = 1023;
+	digitalWrite(ANALOG_PWR, LOW);
+
+	//	data.battery = readVcc() - 2800;
+	data.battery = (4300 - 2800) / 100;
+	data.checksum = 0x0A;
 
 	data_serializer_t serializer;
 	serializer.data = data;
 
-	sendPumpkin(serializer.raw_data, 32);
+	sendMessage(serializer.raw_data);
 
-	_delay_ms(250);
+	_delay_ms(1000);
 }
 
-void sendPumpkin(unsigned long data, int nbits)
+void sendMessage(unsigned long data)
 {
 	sender.enableIROut(38);
 
@@ -47,7 +57,7 @@ void sendPumpkin(unsigned long data, int nbits)
 	//mark(2400);
 	//space(600);
 
-	for (unsigned long mask = 0x00000001UL << (nbits - 1); mask; mask >>= 1)
+	for (unsigned long mask = 0x00000001UL << (DATA_LEN_BITS - 1); mask; mask >>= 1)
 	{
 		if (data & mask)
 		{
@@ -104,14 +114,15 @@ void sendPumpkin(unsigned long data, int nbits)
 //	if (time > 0) _delay_us(time);
 //}
 
-
-long readVcc() {
+long readVcc()
+{
 
 	ADMUX = _BV(MUX3) | _BV(MUX2);
 
 	_delay_ms(2);
 	ADCSRA |= _BV(ADSC);
-	while (bit_is_set(ADCSRA, ADSC));
+	while (bit_is_set(ADCSRA, ADSC))
+		;
 
 	uint8_t low = ADCL;
 	uint8_t high = ADCH;

@@ -20,7 +20,6 @@ void setup()
 
   receiver.blink13(true);
   receiver.enableIRIn();
-  
 }
 
 void loop()
@@ -29,12 +28,13 @@ void loop()
 
   if (receiver.decode(&results))
   {
-    decodePumpkin(&results);
+    decodeMessage(&results);
 
     data_serializer_t serializer;
     serializer.raw_data = results.value;
 
-    byte checksum = serializer.data.serial_no + serializer.data.value;
+    // byte checksum = serializer.data.serial_no + serializer.data.analog + serializer.data.battery;
+    byte checksum = 0xA;
     bool isValid = (serializer.data.checksum == checksum);
 
     Serial.print("Type: 0x");
@@ -46,8 +46,11 @@ void loop()
     Serial.print("S/N: 0x");
     Serial.print(serializer.data.serial_no, HEX);
     Serial.print("\t");
-    Serial.print("Value: 0x");
-    Serial.print(serializer.data.value, HEX);
+    Serial.print("Analog: ");
+    Serial.print(serializer.data.analog);
+    Serial.print("\t");
+    Serial.print("Battery: 0x");
+    Serial.print(serializer.data.battery, HEX);
     Serial.print("\t");
     Serial.print("Checksum: 0x");
     Serial.print(serializer.data.checksum, HEX);
@@ -64,12 +67,12 @@ void loop()
   }
 }
 
-bool decodePumpkin (decode_results *results)
+bool decodeMessage (decode_results *results)
 {
   long  data   = 0;
   int   offset = 0;  // Dont skip first space, check its size
 
-  if (irparams.rawlen < (2 * 32) + 2)
+  if (irparams.rawlen < (2 * DATA_LEN_BITS) + 2)
   {
     return false;
   }
@@ -105,7 +108,7 @@ bool decodePumpkin (decode_results *results)
   }
 
   results->bits = (offset - 1) / 2;
-  if (results->bits < 32) {
+  if (results->bits < DATA_LEN_BITS) {
     results->bits = 0;
     return false;
   }
