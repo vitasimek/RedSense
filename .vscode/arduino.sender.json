@@ -2,5 +2,6 @@
     "output": "build",
     "sketch": "src/sender/sender.ino",
     "board": "ATTinyCore:avr:attinyx5",
-    "configuration": "LTO=disable,TimerClockSource=default,chip=85,clock=8internal,eesave=aenable,bod=disable"
+    "configuration": "LTO=disable,TimerClockSource=default,chip=85,clock=8internal,eesave=aenable,bod=disable",
+    "port": "/dev/ttyUSB0"
 }
