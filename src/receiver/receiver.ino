@@ -11,9 +11,6 @@
 
 IRrecv receiver(CONTROL, LED);
 
-
-
-
 void setup()
 {
   Serial.begin(115200);
@@ -35,47 +32,41 @@ void loop()
 
     byte actualChecksum = serializer.data.checksum;
     serializer.data.checksum = 0;
-    
+
     byte expectedChecksum = computeChecksum(serializer.raw_data);
     bool isValid = (actualChecksum == expectedChecksum);
 
-    Serial.print("Type: 0x");
-    Serial.print(results.decode_type, HEX);
-    Serial.print("\t");
-    Serial.print("Raw length: ");
-    Serial.print(results.rawlen);
-    Serial.print("\t");
-    Serial.print("S/N: 0x");
-    Serial.print(serializer.data.serial_no, HEX);
-    Serial.print("\t");
-    Serial.print("Analog: ");
-    Serial.print(serializer.data.analog);
-    Serial.print("\t");
-    Serial.print("Battery: 0x");
-    Serial.print(serializer.data.battery, HEX);
-    Serial.print("\t");
-    Serial.print("Expected checksum: 0x");
-    Serial.print(expectedChecksum, HEX);
-    Serial.print("\t");
-    Serial.print("Checksum: 0x");
-    Serial.print(actualChecksum, HEX);
-    Serial.print("\t");
-    Serial.print("Valid: ");
-    Serial.print(isValid ? "yes" : "no");
-    Serial.println();
- 
-    receiver.resume();    
-  }
-  else
-  {
-//    Serial.println("X");
+    if (isValid)
+    {
+      Serial.print("Type: 0x");
+      Serial.print(results.decode_type, HEX);
+      Serial.print("\t");
+      Serial.print("Raw length: ");
+      Serial.print(results.rawlen);
+      Serial.print("\t");
+      Serial.print("S/N: 0x");
+      Serial.print(serializer.data.serial_no, HEX);
+      Serial.print("\t");
+      Serial.print("Battery: ");
+      Serial.print(serializer.data.battery * 100 + 2800);
+      Serial.print("\t");
+      Serial.print("Analog: ");
+      Serial.print(serializer.data.analog);
+      Serial.println();
+    }
+    else
+    {
+      Serial.println(results.rawlen);
+    }
+
+    receiver.resume();
   }
 }
 
-bool decodeMessage (decode_results *results)
+bool decodeMessage(decode_results *results)
 {
-  long  data   = 0;
-  int   offset = 0;  // Dont skip first space, check its size
+  long data = 0;
+  int offset = 0; // Dont skip first space, check its size
 
   if (irparams.rawlen < (2 * DATA_LEN_BITS) + 2)
   {
@@ -96,11 +87,11 @@ bool decodeMessage (decode_results *results)
       break;
     }
 
-    if(MATCH_MARK(results->rawbuf[offset], 1200))
+    if (MATCH_MARK(results->rawbuf[offset], 1200))
     {
       data = (data << 1) | 1;
     }
-    else if(MATCH_MARK(results->rawbuf[offset], 600))
+    else if (MATCH_MARK(results->rawbuf[offset], 600))
     {
       data = (data << 1) | 0;
     }
@@ -108,17 +99,17 @@ bool decodeMessage (decode_results *results)
     {
       return false;
     }
-    
+
     offset++;
   }
 
   results->bits = (offset - 1) / 2;
-  if (results->bits < DATA_LEN_BITS) {
+  if (results->bits < DATA_LEN_BITS)
+  {
     results->bits = 0;
     return false;
   }
-  results->value       = data;
+  results->value = data;
   results->decode_type = 0x49;
   return true;
 }
-

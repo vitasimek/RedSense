@@ -32,12 +32,10 @@ void loop()
 	data.checksum = 0;
 
 	digitalWrite(ANALOG_PWR, HIGH);
-	//	data.analog = analogRead(ANALOG_PIN);
-	data.analog = 1023;
+	data.analog = analogRead(ANALOG_PIN);
 	digitalWrite(ANALOG_PWR, LOW);
 
-	//	data.battery = readVcc() - 2800;
-	data.battery = (4300 - 2800) / 100;
+	data.battery = (readVcc() - 2800) / 100;
 
 	data_serializer_t serializer;
 	serializer.data = data;
