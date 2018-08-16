@@ -3,3 +3,4 @@ models/*.stl
 build
 crc/bin
 crc/obj
+geda/sender.sch~
