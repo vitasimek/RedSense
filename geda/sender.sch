@@ -8,7 +8,7 @@ refdes=B1
 T 77700 61500 5 10 0 0 0 0 1
 symversion=0.1
 T 77400 60200 5 10 0 0 0 0 1
-footprint=SIP2N
+footprint=SIP2
 T 77800 60700 5 10 1 1 0 0 1
 value=3.6V
 }
@@ -117,7 +117,7 @@ refdes=CONN1
 T 66600 57750 5 10 0 0 180 0 1
 device=CONNECTOR_2
 T 66600 57550 5 10 0 0 180 0 1
-footprint=SIP2N
+footprint=SIP2
 }
 N 66900 58600 68000 58600 4
 N 66900 58200 68000 58200 4
