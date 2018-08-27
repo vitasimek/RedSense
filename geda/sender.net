@@ -1,0 +1,7 @@
+unnamed_net6	R1-2 CONN1-1 U1-3 
+unnamed_net5	CONN1-2 U1-2 
+unnamed_net4	Q1-2 D1-1 
+unnamed_net3	D1-2 R2-1 
+unnamed_net2	U1-6 Q1-1 R3-2 
+GND	R1-1 U1-4 Q1-3 R3-1 C1-2 B1-2 
+unnamed_net1	R2-2 U1-8 C1-1 B1-1 
