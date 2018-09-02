@@ -3,7 +3,7 @@
 # To read pcb files, the pcb version (or the git source date) must be >= the file version
 FileVersion[20091103]
 
-PCB["" 6000.00mil 5000.00mil]
+PCB["" 28.0000mm 52.0000mm]
 
 Grid[5000.000000 0.0000 0.0000 1]
 PolyArea[200000000.000000]
@@ -785,7 +785,7 @@ Symbol['~' 12.00mil]
 	SymbolLine[15.00mil 35.00mil 20.00mil 35.00mil 8.00mil]
 	SymbolLine[20.00mil 35.00mil 25.00mil 30.00mil 8.00mil]
 )
-Attribute("PCB::grid::unit" "mil")
+Attribute("PCB::grid::unit" "mm")
 Attribute("PCB::grid::size" "50.00mil")
 
 Element["" "SIP2" "CONN1" "unknown" 200.00mil 350.00mil 50.00mil 50.00mil 1 100 ""]
@@ -959,6 +959,10 @@ Layer(6 "bottom")
 	Line[13.5861mm 12.4900mm 13.5861mm 13.6330mm 40.00mil 20.00mil "clearline,auto"]
 	Line[22.3566mm 696.61mil 22.3566mm 832.63mil 40.00mil 20.00mil "clearline,auto"]
 	Line[22.3566mm 696.61mil 677.76mil 696.61mil 40.00mil 20.00mil "clearline,auto"]
+	Polygon("clearpoly")
+	(
+		[0.0000 0.0000] [1100.00mil 0.0000] [1100.00mil 2050.00mil] [0.0000 2050.00mil] 
+	)
 )
 Layer(7 "outline")
 (
